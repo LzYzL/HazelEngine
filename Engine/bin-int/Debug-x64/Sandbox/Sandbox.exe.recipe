@@ -2,9 +2,6 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>L:\_LzYzL\_SelfMakeEngine\Engine\bin\Debug-x64\Engine\Engine.dll</FullPath>
-    </ProjectOutput>
-    <ProjectOutput>
       <FullPath>L:\_LzYzL\_SelfMakeEngine\Engine\bin\Debug-x64\Sandbox\Sandbox.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
