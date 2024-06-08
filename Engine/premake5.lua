@@ -10,6 +10,11 @@ workspace "Hazel"
 
 outputdir="%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir={}
+IncludeDir["GLFW"]= "Hazel/vendor/GLFW/include"
+
+include "Hazel/vendor/GLFW"
+
 project "Hazel"
     location "Hazel"
     kind "SharedLib"
@@ -30,7 +35,14 @@ project "Hazel"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/vendor/spdlog/include"
+        "%{prj.name}/vendor/spdlog/include",
+        "%{IncludeDir.GLFW}"
+    }
+
+    links
+    {
+        "GLFW",
+        "OpenGL32.lib"
     }
 
     filter "system:windows"
@@ -51,7 +63,7 @@ project "Hazel"
             "{MKDIR} ../bin/" .. outputdir .. "/Sandbox",    
             ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
         }
-    
+            
     filter  "configurations:Debug"
         defines "HZ_DEBUG"
         symbols "On"
