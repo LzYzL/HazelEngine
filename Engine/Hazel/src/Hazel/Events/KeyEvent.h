@@ -48,6 +48,6 @@ namespace Hazel
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyReleasedEvent)
+		EVENT_CLASS_TYPE(KeyReleased)
 	};
 }
