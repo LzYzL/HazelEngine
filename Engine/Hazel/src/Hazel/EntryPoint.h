@@ -1,22 +1,19 @@
 #pragma once
 
-
 #ifdef HZ_PLATFORM_WINDOWS
 
 extern Hazel::Application* Hazel::CreateApplication();
 
-int main(int argc,char** argv)
+int main(int argc, char** argv)
 {
-	//printf("Hazel Engine\n");
-	Hazel::Log::init();
-	HZ_CORE_WARN("Initialized log");
-	int a = 5,b=2;
-	HZ_INFO("Hello, var={1}",a,b);
+	Hazel::Log::Init();
+	HZ_CORE_WARN("Initialized Log!");
+	int a = 5;
+	HZ_INFO("Hello! Var={0}", a);
 
 	auto app = Hazel::CreateApplication();
-	app->run();
+	app->Run();
 	delete app;
-	return 0;
 }
 
 #endif

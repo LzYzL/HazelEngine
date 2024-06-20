@@ -1,13 +1,13 @@
- #pragma once
-#include <stdio.h>
+#pragma once
 
-#include "Hazel/Core.h"
+// For use by Hazel applications
+
 #include "Hazel/Application.h"
-#include "Hazel/Log.h"
 #include "Hazel/Layer.h"
+#include "Hazel/Log.h"
+
 #include "Hazel/ImGui/ImGuiLayer.h"
 
-
-//---Entry Point----------
+// ---Entry Point---------------------
 #include "Hazel/EntryPoint.h"
-//------------------------
+// -----------------------------------

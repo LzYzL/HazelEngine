@@ -40,4 +40,5 @@ namespace Hazel {
 		if (it != m_Layers.end())
 			m_Layers.erase(it);
 	}
+
 }

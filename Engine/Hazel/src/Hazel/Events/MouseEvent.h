@@ -2,16 +2,16 @@
 
 #include "Event.h"
 
-namespace Hazel
-{
-	class HZ_API MouseMovedEvent :public Event
+namespace Hazel {
+
+	class HAZEL_API MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
-			:m_MouseX(x), m_MouseY(y) {}
+			: m_MouseX(x), m_MouseY(y) {}
 
-		inline float GetX() { return m_MouseX; }
-		inline float GetY() { return m_MouseY; }
+		inline float GetX() const { return m_MouseX; }
+		inline float GetY() const { return m_MouseY; }
 
 		std::string ToString() const override
 		{
@@ -26,10 +26,10 @@ namespace Hazel
 		float m_MouseX, m_MouseY;
 	};
 
-	class HZ_API MouseScrolledEvent :public Event
+	class HAZEL_API MouseScrolledEvent : public Event
 	{
 	public:
-		MouseScrolledEvent(float xOffset,float yOffset)
+		MouseScrolledEvent(float xOffset, float yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {}
 
 		inline float GetXOffset() const { return m_XOffset; }
@@ -48,22 +48,24 @@ namespace Hazel
 		float m_XOffset, m_YOffset;
 	};
 
-	class HZ_API MouseButtonEvent :public Event
+	class HAZEL_API MouseButtonEvent : public Event
 	{
 	public:
 		inline int GetMouseButton() const { return m_Button; }
+
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	protected:
 		MouseButtonEvent(int button)
-			:m_Button(button) {}
+			: m_Button(button) {}
+
 		int m_Button;
 	};
 
-	class HZ_API MouseButtonPressedEvent :public MouseButtonEvent
+	class HAZEL_API MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
-			:MouseButtonEvent(button) {}
+			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{
@@ -75,11 +77,11 @@ namespace Hazel
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class HZ_API MouseButtonReleasedEvent :public MouseButtonEvent
+	class HAZEL_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button)
-			:MouseButtonEvent(button) {}
+			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{
@@ -90,4 +92,5 @@ namespace Hazel
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
+
 }

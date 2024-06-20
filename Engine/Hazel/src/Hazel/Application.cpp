@@ -1,19 +1,19 @@
 #include "hzpch.h"
 #include "Application.h"
-#include "Hazel/log.h"
+
+#include "Hazel/Log.h"
 
 #include <glad/glad.h>
 
-namespace Hazel 
-{
+namespace Hazel {
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x,this,std::placeholders::_1)
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application() 
 	{
-		HZ_CORE_ASSERT(!s_Instance,"Application already exists!");
+		HZ_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
@@ -22,7 +22,6 @@ namespace Hazel
 
 	Application::~Application()
 	{
-
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -39,41 +38,29 @@ namespace Hazel
 
 	void Application::OnEvent(Event& e)
 	{
-
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		HZ_CORE_TRACE(e.ToString());
-
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
-			if (e.Handled())
+			if (e.Handled)
 				break;
 		}
 	}
 
-	void Application::run()
+	void Application::Run()
 	{
-		if (0)
-		{
-			WindowResizeEvent e(1200, 720);
-			// HZ_TRACE(e); in game engine series
-			// don't know why failed to build
-			HZ_TRACE(e.ToString());
-		}
-
 		while (m_Running)
 		{
-			glClearColor((double)56/255, (double)128/255, (double)143/255, 0.5);
+			glClearColor((double)56 / 255, (double)128 / 255, (double)143 / 255, 0.5);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			for (Layer* layer:m_LayerStack)
+			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
 			m_Window->OnUpdate();
 		}
-		
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
@@ -81,4 +68,5 @@ namespace Hazel
 		m_Running = false;
 		return true;
 	}
+
 }

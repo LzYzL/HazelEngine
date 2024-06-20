@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Hazel/Layer.h"
 
 #include "Hazel/Events/ApplicationEvent.h"
@@ -7,7 +8,7 @@
 
 namespace Hazel {
 
-	class HZ_API ImGuiLayer :public Layer
+	class HAZEL_API ImGuiLayer : public Layer
 	{
 	public:
 		ImGuiLayer();
@@ -27,6 +28,7 @@ namespace Hazel {
 		bool OnKeyTypedEvent(KeyTypedEvent& e);
 		bool OnWindowResizeEvent(WindowResizeEvent& e);
 	private:
-		float m_Time;
+		float m_Time = 0.0f;
 	};
+
 }

@@ -7,7 +7,7 @@
 
 namespace Hazel {
 
-	class HZ_API LayerStack
+	class HAZEL_API LayerStack
 	{
 	public:
 		LayerStack();
@@ -24,4 +24,5 @@ namespace Hazel {
 		std::vector<Layer*> m_Layers;
 		std::vector<Layer*>::iterator m_LayerInsert;
 	};
+
 }

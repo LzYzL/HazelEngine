@@ -4,7 +4,8 @@
 #include "Hazel/Events/Event.h"
 
 namespace Hazel {
-	class HZ_API Layer
+
+	class HAZEL_API Layer
 	{
 	public:
 		Layer(const std::string& name = "Layer");
@@ -19,4 +20,5 @@ namespace Hazel {
 	protected:
 		std::string m_DebugName;
 	};
+
 }

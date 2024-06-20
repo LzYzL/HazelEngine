@@ -1,10 +1,10 @@
 #pragma once
 
-#include"Event.h"
+#include "Event.h"
 
-namespace Hazel
-{
-	class HZ_API WindowResizeEvent: public Event
+namespace Hazel {
+
+	class HAZEL_API WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
@@ -16,7 +16,7 @@ namespace Hazel
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "WindowResizeEvent: " << m_Width << "," << m_Height;
+			ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
 			return ss.str();
 		}
 
@@ -26,7 +26,7 @@ namespace Hazel
 		unsigned int m_Width, m_Height;
 	};
 
-	class HZ_API WindowCloseEvent :public Event
+	class HAZEL_API WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -35,7 +35,7 @@ namespace Hazel
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class HZ_API AppTickEvent :public Event
+	class HAZEL_API AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() {}
@@ -44,7 +44,7 @@ namespace Hazel
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class HZ_API AppUpdateEvent :public Event
+	class HAZEL_API AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() {}
@@ -53,7 +53,7 @@ namespace Hazel
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class HZ_API AppRenderEvent :public Event
+	class HAZEL_API AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() {}
