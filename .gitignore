@@ -1,7 +1,7 @@
 #directories
-/Engine/.vs
-/Engine/bin
-/Engine/bin-int
+**/.vs
+**/bin
+**/bin-int
 
 #files
 *.user
