@@ -22,8 +22,10 @@ include "Hazel/vendor/imgui"
 
 project "Hazel"
     location "Hazel"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -35,6 +37,11 @@ project "Hazel"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp"
+    }
+
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     includedirs
@@ -56,7 +63,6 @@ project "Hazel"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
 
@@ -64,31 +70,24 @@ project "Hazel"
         {
             "HZ_PLATFORM_WINDOWS",
             "HZ_BUILD_DLL",
-            "GLFW_INCLUDE_NONE"
+            "GLFW_INCLUDE_NONE",
             -- "_WINDLL"
-        }
-    
-        postbuildcommands
-        { 
-            "{RMDIR} ../bin/" .. outputdir .. "/Sandbox",
-            "{MKDIR} ../bin/" .. outputdir .. "/Sandbox",    
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
         }
             
     filter  "configurations:Debug"
         defines "HZ_DEBUG"
         buildoptions "/MDd"
-        symbols "On"
+        symbols "on"
 
     filter  "configurations:Release"
         defines "HZ_RELEASE"
         buildoptions "/MD"
-        optimize "On"
+        optimize "on"
 
     filter  "configurations:Dist"
         defines "HZ_DIST"
         buildoptions "/MD"
-        optimize "On"
+        optimize "on"
 
     -- filters {"system:windows","configuration:Release"}
     --     buildoptions "/MT"
@@ -97,6 +96,8 @@ project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -122,8 +123,7 @@ project "Sandbox"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
-        staticruntime "On"
+        staticruntime "on"
         systemversion "latest"
 
         defines
@@ -141,14 +141,14 @@ project "Sandbox"
     filter  "configurations:Debug"
         defines "HZ_DEBUG"
         buildoptions "/MDd"
-        symbols "On"
+        symbols "on"
 
     filter  "configurations:Release"
         defines "HZ_RELEASE"
         buildoptions "/MD"
-        optimize "On"
+        optimize "on"
 
     filter  "configurations:Dist"
         defines "HZ_DIST"
         buildoptions "/MD"
-        optimize "On"
+        optimize "on"
