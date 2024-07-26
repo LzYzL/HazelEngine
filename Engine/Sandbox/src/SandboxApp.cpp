@@ -11,7 +11,7 @@ class ExampleLayer : public Hazel::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
+		: Layer("Example"), m_CameraController(1280.0f / 720.0f,true)
 	{
 		m_VertexArray.reset(Hazel::VertexArray::Create());
 
@@ -49,7 +49,7 @@ public:
 		squareVB->SetLayout({
 			{ Hazel::ShaderDataType::Float3, "a_Position" },
 			{ Hazel::ShaderDataType::Float2, "a_TexCoord" }
-			});
+		});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
@@ -88,6 +88,7 @@ public:
 			void main()
 			{
 				color = vec4(v_Position * 0.5 + 0.5, 1.0);
+				color = v_Color;
 			}
 		)";
 
@@ -102,6 +103,7 @@ public:
 			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
+
 			void main()
 			{
 				v_Position = a_Position;
@@ -113,8 +115,11 @@ public:
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
+
 			in vec3 v_Position;
+			
 			uniform vec3 u_Color;
+
 			void main()
 			{
 				color = vec4(u_Color, 1.0);
@@ -125,7 +130,7 @@ public:
 
 		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
-		m_Texture = Hazel::Texture2D::Create("assets/textures/0.png");
+		m_Texture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_ChernoLogoTexture = Hazel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
 		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader)->Bind();
@@ -134,27 +139,14 @@ public:
 
 	void OnUpdate(Hazel::Timestep ts) override
 	{
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
-			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
-			m_CameraPosition.x += m_CameraMoveSpeed * ts;
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_UP))
-			m_CameraPosition.y += m_CameraMoveSpeed * ts;
-		else if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN))
-			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
+		// Update
+		m_CameraController.OnUpdate(ts);
 
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_A))
-			m_CameraRotation += m_CameraRotationSpeed * ts;
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_D))
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
-
+		// Render
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		Hazel::Renderer::BeginScene(m_Camera);
+		Hazel::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -191,8 +183,9 @@ public:
 		ImGui::End();
 	}
 
-	void OnEvent(Hazel::Event& event) override
+	void OnEvent(Hazel::Event& e) override
 	{
+		m_CameraController.OnEvent(e);
 	}
 private:
 	Hazel::ShaderLibrary m_ShaderLibrary;
@@ -204,14 +197,10 @@ private:
 
 	Hazel::Ref<Hazel::Texture2D> m_Texture, m_ChernoLogoTexture;
 
-	Hazel::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraMoveSpeed = 5.0f;
-	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 180.0f;
-
+	Hazel::OrthographicCameraController m_CameraController;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };
+
 class Sandbox : public Hazel::Application
 {
 public:
@@ -222,8 +211,11 @@ public:
 
 	~Sandbox()
 	{
+
 	}
+
 };
+
 Hazel::Application* Hazel::CreateApplication()
 {
 	return new Sandbox();
